@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Button, FormGroup, Spinner } from "reactstrap";
 import * as Yup from "yup";
+import RandomPhoto from "components/RandomPhoto/RandomPhoto";
 
 PhotoForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -17,22 +18,59 @@ PhotoForm.defaultProps = {
 };
 
 function PhotoForm(props) {
+  const initialValues = {
+    title: "",
+    categoryId: null,
+    photo: "",
+  };
+
+  const validationSchema = Yup.object().shape({
+    title: Yup.string().required("This field is required ."),
+
+    categoryId: Yup.number().required("This field is required .").nullable(),
+
+    photo: Yup.string().required("This field is required ."),
+  });
+
   // npm i --save react-select
   return (
-    <Formik>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={(values) => console.log("value: ", values)}
+    >
       {(formikProps) => {
         // do something here ...
+        const { values, errors, touched } = formikProps;
+        console.log({ values, errors, touched });
 
         return (
           <Form>
-            <FastField />
+            <FastField
+              name="title"
+              component={InputField}
+              label="Title"
+              placeholder="Do something ..."
+            />
 
-            <FastField />
+            <FastField
+              name="categoryId"
+              component={SelectField}
+              label="Category"
+              placeholder="What's your Photo ..."
+              options={PHOTO_CATEGORY_OPTIONS}
+            />
 
-            <FastField />
+            <FastField
+              name="photo"
+              component={RandomPhotoField}
+              label="Photo"
+            />
 
             <FormGroup>
-              <Button>button</Button>
+              <Button type="submit" color="primary">
+                Add to album
+              </Button>
             </FormGroup>
           </Form>
         );

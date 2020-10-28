@@ -21,7 +21,36 @@ InputField.defaultProps = {
 };
 
 function InputField(props) {
-  return <div>input field</div>;
+  const { field, form, type, label, placeholder, disabled } = props;
+
+  const { errors, touched } = form;
+  const { name, value, onChange, onBlur } = field;
+
+  const showError = errors[name] && touched[name];
+
+  return (
+    <React.Fragment>
+      <FormGroup>
+        {label && <Label for={name}>{label}</Label>}
+
+        <Input
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          // {...field}
+
+          type={type}
+          disabled={disabled}
+          placeholder={placeholder}
+          invalid={showError}
+        />
+
+        <ErrorMessage name={name} component={FormFeedback} />
+      </FormGroup>
+    </React.Fragment>
+  );
 }
 
 export default InputField;
