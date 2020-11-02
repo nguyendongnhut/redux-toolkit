@@ -26,7 +26,7 @@ SelectField.defaultProps = {
 function SelectField(props) {
   const { field, form, label, placeholder, disabled, options } = props;
 
-  const { name, value, onChange, onBlur } = field;
+  const { name, value, onBlur } = field;
 
   const { errors, touched } = form;
 
